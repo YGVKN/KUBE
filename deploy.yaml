@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: app-deploy
+ namespace: dev
+ labels:
+  app: clj-app
+spec:
+ replicas: 3
+ selector:
+  matchLabels:
+   app: clj-app
+ strategy:
+  type: RollingUpdate
+  rollingUpdate:
+   maxUnavailable: 10%
+ template:
+  metadata:
+   labels:
+    app: clj-app
+  spec:
+   containers:
+   - name: clj-app
+     image: zhuzha/app
+     imagePullPolicy: IfNotPresent
+     resources:
+      limits:
+       memory: "1Gi"
+       cpu: "500m"
+      requests:
+       memory: "500m"
+       cpu: "200m"
+     ports:
+      - name: app-port
+        containerPort: 8888
+     volumeMounts:
+     - name: app-storage
+       mountPath: /ygvkn
+   volumes:
+   - name: app-storage
+     persistentVolumeClaim:
+      claimName: app-vol
+  # nodeSelector:
+  #  kubernetes.io/hostname: kube-node1601
+  
+   #nodeName: kube-node1601
+---
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: app-svc 
+  namespace: dev
+spec: 
+  ports: 
+  - name: svc-port
+    port: 7777
+    targetPort: 8888
+    protocol: TCP
+  selector: 
+    app: clj-app
+...
