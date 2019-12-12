@@ -1,2 +1,2 @@
 
- ![ZHUZHA CORP](https://media.giphy.com/media/jYjA6fHBfAZvq/giphy.gif)
+ ![ZHUZHA CORP](https://gph.is/2tfhafF)
